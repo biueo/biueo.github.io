@@ -1,0 +1,126 @@
+<script src="/assets/js/APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Biueo：微语</title>
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style type="text/css">
+   @font-face {
+      font-family: huakang;
+      src: url('../fonts/huakang.TTC');
+    }
+    @font-face {
+      font-family: xinwei;
+      src: url('../fonts/xinwei.TTF');
+    }
+*{margin:0;padding:0;list-style: none;}
+a{text-decoration: none;color: #fff;}
+
+.containter{width:100%;height:100%;position:absolute;margin-top:50px;left:0;top:0;}
+body,html{height:100%;overflow: hidden;}
+
+
+.page{width:100%;height:100%;background: white;font-family: xinwei;font-size: 36px;}
+.xinwei{height:90%;display:flex;justify-content: center; flex-direction: column;}
+.xinweileft{width:500px;margin:auto;text-align:left;}
+.xinweicenter{width:500px;margin:auto;text-align:center;}
+.huakang{width:500px;margin:auto;text-align:right;font-family: huakang;font-size: 20px;}
+.xinweicenter a{color:black;font-family:xinwei;font-size: 36;}
+.huakang a{color:black;font-family:"font-awesome";font-size: 22px;}
+.huakang a:hover{ color:#000; border-bottom:2px solid black; border-bottom-left-radius:10%; border-bottom-right-radius: 10%;}
+.xinweicenter a i:hover{ color:#000; border-bottom:2px solid black; border-bottom-left-radius:10%; border-bottom-right-radius: 10%;}
+</style>
+
+<link href="font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery.mousewheel.min.js"></script>
+<script type="text/javascript">
+$(function() {
+  var nowpage=0;
+  var pagenum=6
+  var lock=true;
+  function donghua(){
+    $('.containter').animate({'top': -100*nowpage+'%'}, pagenum*100);
+    $('.page').eq(nowpage).addClass('current').siblings().removeClass('current');
+  }
+  $(document).mousewheel(function (event,delta) {
+    if(lock){ 
+      nowpage=nowpage-delta;
+      if(nowpage<0){nowpage=0;}
+      if(nowpage>pagenum-1){nowpage=pagenum-1;}
+       donghua();
+      lock=false;
+      setTimeout(function  () {
+        // body...
+        lock=true;
+      },1000);
+    }
+  })
+});
+</script>
+</head>
+<body>
+<div class="containter">
+  <div id="top"></div>
+
+  <div class="page">
+    <div class="xinwei">
+      <div class="xinweicenter">
+      下一步向着JavaScript进军<br>
+      </div>
+      <div class="huakang">二零一八年一月二十号&emsp;<a href="http://www.biueo.com"><i class="fa fa-home fa-fw"></i></a></div>
+    </div>
+
+  <div class="page">
+    <div class="xinwei">
+      <div class="xinweicenter">
+      <br>诗是树叶，<br>比秋天短，<br>比世界长。<br>
+
+      </div>
+      <div class="huakang">出自：顾城&emsp;<a href="http://www.biueo.com"><i class="fa fa-home fa-fw"></i></a></div>
+    </div>
+
+  <div class="page">
+    <div class="xinwei">
+      <div class="xinweileft">
+      博客优化暂停，后面陆续会将优化过程写上。<br>
+      毕竟从小白过来的不容易，记录一下还是可以的。<br>
+      回归课题吧，上一周基本都在搞网站。<br>
+      课题时间投入不足，以后加把劲<br>
+      </div>
+      <div class="huakang">二零一八年一月十五日周一凌晨&emsp;<a href="http://www.biueo.com"><i class="fa fa-home fa-fw"></i></a></div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="xinwei">
+      <div class="xinweileft">
+        一直所有的<br>
+        或悲或喜或狗血的故事里<br>
+        都有一个喜欢的你&emsp;<a href="http://www.biueo.com"><i class="fa fa-home fa-fw"></i></a><br>
+      </div>
+      <div class="huakang">二零一八年一月十四日&emsp;<a href="http://www.biueo.com"><i class="fa fa-home fa-fw"></i></a></div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="xinwei">
+      <div class="xinweicenter">
+        愿这个世界都被温柔相待<br>
+        <br><br>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=29836747&auto=1&height=66"></iframe>
+      </div>
+    <div class="huakang">二零一八年一月十三日 <a href="http://www.biueo.com"><i class="fa fa-home fa-fw"></i> </a> </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="xinwei">
+      <div class="xinweicenter">
+        <a href="/sentence"><i class="fa fa-arrow-circle-up fa-fw"></i>回到顶部</a>&emsp;<a href="/"><i class="fa fa-home fa-fw"></i></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div></div></body>
+</html>

@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                location="http://www.biueo.com";
+            }
+        }
+    })();
+</script>
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-64x64-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数码管数字识别，创建Mnist形式数据集" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Biueo" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="创建数码管数字识别的数据集，通过卷积神经网络学习，最终实现能够识别图片中数码管数字的功能">
+<meta name="keywords" content="数码管数字识别，创建Mnist形式数据集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数码管数字识别">
+<meta property="og:url" content="http://www.biueo.com/2018/07/31/数码管数字识别/index.html">
+<meta property="og:site_name" content="Biueo">
+<meta property="og:description" content="创建数码管数字识别的数据集，通过卷积神经网络学习，最终实现能够识别图片中数码管数字的功能">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-7-31/77966632.jpg">
+<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-7-31/99441287.jpg">
+<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-7-31/1618438.jpg">
+<meta property="og:updated_time" content="2018-07-31T03:02:46.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数码管数字识别">
+<meta name="twitter:description" content="创建数码管数字识别的数据集，通过卷积神经网络学习，最终实现能够识别图片中数码管数字的功能">
+<meta name="twitter:image" content="http://otbsjcslc.bkt.clouddn.com//18-7-31/77966632.jpg">
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideUpBigIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  <link rel="canonical" href="http://www.biueo.com/2018/07/31/数码管数字识别/"/>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/meting@1.0.1/dist/Meting.min.js"></script>  
+
+  <title>数码管数字识别 | Biueo</title>
+  
+
+
+
+
+
+
+
+
+  <script src="/js/src/photoswipe.min.js?v=5.1.4"></script>
+  <script src="/js/src/photoswipe-ui-default.min.js?v=5.1.4"></script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  
+  
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:1;
+    left: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    var trElement = document.getElementById('hexo-helper-live2d');
+    trElement.parentNode.removeChild(trElement);
+    return;
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Biueo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">行到水穷处 坐看云起时</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th-list"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-相册">
+          <a href="/photos" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-camera"></i> <br />
+            
+            相册
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-音乐">
+          <a href="/music/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-music"></i> <br />
+            
+            音乐
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.biueo.com/2018/07/31/数码管数字识别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Decai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Biueo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">数码管数字识别</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T10:04:23+08:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/TensorFlow/" itemprop="url" rel="index">
+                    <span itemprop="name">TensorFlow</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/31/数码管数字识别/" class="leancloud_visitors" data-flag-title="数码管数字识别">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,867 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <script src="/assets/js/APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote class="blockquote-center"><p>创建数码管数字识别的数据集，通过卷积神经网络学习，最终实现能够识别图片中数码管数字的功能 </p>
+</blockquote>
+<a id="more"></a>
+<h2 id="简单数据集的创建"><a href="#简单数据集的创建" class="headerlink" title="简单数据集的创建"></a>简单数据集的创建</h2><h3 id="提取数字图片"><a href="#提取数字图片" class="headerlink" title="提取数字图片"></a>提取数字图片</h3><p>数据集的创建主要是通过opencv库的裁剪，以及人工标定的方式去实现。详细如下:  </p>
+<p>安装OpenCV-python库，<code>pip install OpenCV-python</code>   </p>
+<p>然后通过对多张张图片（例如下图）中的数字进行提取：<br><img src="http://otbsjcslc.bkt.clouddn.com//18-7-31/77966632.jpg" alt=""></p>
+<p>提取数字代码如下：<br><figure class="highlight python"><figcaption><span>提取图片中数字生成统一标准图片</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#导入相应库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> mp</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数对图片进行膨胀和腐蚀，不同情况需修改特定参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">thresholding_inv</span><span class="params">(image)</span>:</span></span><br><span class="line">    kernel_dilate = cv2.getStructuringElement(cv2.MORPH_RECT,(<span class="number">1</span>, <span class="number">6</span>))</span><br><span class="line">    <span class="comment">#kernel_erode = cv2.getStructuringElement(cv2.MORPH_RECT,(1, 1))</span></span><br><span class="line">    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    ret, bin = cv2.threshold(gray, <span class="number">220</span>, <span class="number">255</span>, cv2.THRESH_BINARY)</span><br><span class="line">    <span class="comment">#bin = cv2.medianBlur(bin, 3)</span></span><br><span class="line">    <span class="comment">#bin = cv2.erode(bin,kernel_erode)</span></span><br><span class="line">    bin=cv2.dilate(bin,kernel_dilate,iterations = <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读入图片，</span></span><br><span class="line">tt=<span class="number">6</span>  <span class="comment"># 样图序号</span></span><br><span class="line">im = cv2.imread(<span class="string">'./datasets/img0000%s.png'</span> % tt)<span class="comment"># 样图位置，</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理图片</span></span><br><span class="line">im_th = thresholding_inv(im)</span><br><span class="line"><span class="comment"># 显示图片</span></span><br><span class="line">cv2.imshow(<span class="string">'%s'</span>%tt ,im_th)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Find contours in the image</span></span><br><span class="line">_,ctrs, hier = cv2.findContours(im_th.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get rectangles contains each contour</span></span><br><span class="line">rects = [cv2.boundingRect(ctr) <span class="keyword">for</span> ctr <span class="keyword">in</span> ctrs]</span><br><span class="line">t=tt*<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> rect <span class="keyword">in</span> rects:</span><br><span class="line">    <span class="comment"># Draw the rectangles</span></span><br><span class="line">    cv2.rectangle(im, (rect[<span class="number">0</span>], rect[<span class="number">1</span>]), (rect[<span class="number">0</span>] + rect[<span class="number">2</span>], rect[<span class="number">1</span>] + rect[<span class="number">3</span>]), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">3</span>) </span><br><span class="line">    <span class="comment"># Make the rectangular region around the digit</span></span><br><span class="line">    leng1= int(rect[<span class="number">3</span>])</span><br><span class="line">    leng2= int(rect[<span class="number">2</span>])</span><br><span class="line">    pt1 = int(rect[<span class="number">1</span>] )</span><br><span class="line">    pt2 = int(rect[<span class="number">0</span>] )</span><br><span class="line">    roi = im_th[pt1:pt1+leng1, pt2:pt2+leng2]</span><br><span class="line">    <span class="comment"># 生成统一尺寸图片，类似于mnist数据集</span></span><br><span class="line">    roi = cv2.resize(roi, (<span class="number">28</span>, <span class="number">28</span>), interpolation=cv2.INTER_AREA)</span><br><span class="line">    <span class="comment">#roi = cv2.dilate(roi, (3, 3))</span></span><br><span class="line">    cv2.imshow(<span class="string">'roi'</span>,roi)</span><br><span class="line">    cv2.waitKey(<span class="number">1000</span>)</span><br><span class="line">    <span class="comment"># 保存图片至相应路径</span></span><br><span class="line">    cv2.imwrite(<span class="string">'./datasets/test2/%s.jpg'</span>%t,roi)</span><br><span class="line">    t=t+<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="手工标定labels"><a href="#手工标定labels" class="headerlink" title="手工标定labels"></a>手工标定labels</h3><p>这一步很简单，直接创建一个txt格式的文件，按照采集的图片顺序，行号对应图片序号进行标定：  </p>
+<p>比如我的：<br><img src="http://otbsjcslc.bkt.clouddn.com//18-7-31/99441287.jpg" alt=""></p>
+<h3 id="图片和标签对应处理"><a href="#图片和标签对应处理" class="headerlink" title="图片和标签对应处理"></a>图片和标签对应处理</h3><p>将数据集图片和标签进行一一对应，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#导入数据图片，以features命名</span></span><br><span class="line">imgs=os.listdir(<span class="string">'./datasets/train/imgs/'</span>)</span><br><span class="line"><span class="comment"># 定义一个排序函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nu_str</span><span class="params">(string)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> int(string.split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"><span class="comment"># 将文件夹中的文件按照名称数字大小进行排序 能够与labels一一对应</span></span><br><span class="line">imgs.sort(key=nu_str)</span><br><span class="line">features_train=[]</span><br><span class="line"><span class="comment"># 对每一张图片进行处理，主要是将矩阵转化为一个向量，最后将所有图片打包</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> imgs:</span><br><span class="line">    img=cv2.imread(<span class="string">'./datasets/train/imgs/'</span>+str(i),<span class="number">0</span>)</span><br><span class="line">    <span class="comment">#res,img=cv2.threshold(img, 200, 255, cv2.THRESH_BINARY)</span></span><br><span class="line">    <span class="comment">#img=cv2.copyMakeBorder(img,5,5,5,5,cv2.BORDER_CONSTANT,value=0)</span></span><br><span class="line">    <span class="comment">#cv2.imshow('3',img)</span></span><br><span class="line">    <span class="comment">#cv2.waitKey(100)</span></span><br><span class="line">    img=img.reshape(<span class="number">28</span>*<span class="number">28</span>)/<span class="number">255</span></span><br><span class="line">    features_train.append(img)</span><br><span class="line">features_train=np.array(features_train) <span class="comment"># 包含所有图片的一个向量集</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## labels</span></span><br><span class="line"><span class="comment">## 将每一个图片对应的结果转化为one-hot形式储存## 将每一个 </span></span><br><span class="line"><span class="comment"># 读取文件所有内容</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'./datasets/train/targets/target.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    tars=f.readlines()</span><br><span class="line"><span class="comment"># 向量不同位置对应的结果</span></span><br><span class="line">tar_temp=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="string">'.'</span>]</span><br><span class="line">labels_train=[]</span><br><span class="line"><span class="comment"># 构造one-hot形式的向量集</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tars:</span><br><span class="line">    b=np.array([i[<span class="number">0</span>]==str(tar_temp[j]) <span class="keyword">for</span> j <span class="keyword">in</span> range(len(tar_temp))])+<span class="number">0</span></span><br><span class="line">    labels_train.append(b)  <span class="comment"># 一个包含所有结果的向量集（与图片集一一对应）</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="验证数据集是否匹配"><a href="#验证数据集是否匹配" class="headerlink" title="验证数据集是否匹配"></a>验证数据集是否匹配</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看数据集与结果是否一一对应，主要看看显示的图片和打印的数字是否一致</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(features_train)):</span><br><span class="line">    cv2.imshow(<span class="string">'feature'</span>,features_train[i].reshape(<span class="number">28</span>,<span class="number">28</span>))</span><br><span class="line">    print(np.argmax(labels_train[i]))</span><br><span class="line">    cv2.waitKey(<span class="number">500</span>) <span class="comment"># 单张图片的显示时间ms</span></span><br></pre></td></tr></table></figure>
+<h2 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h2><h3 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h3><p>多重卷积模型，参考TensorFlow文档，直接上代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义权重函数工厂函数（批量生产权重的函数，为了方便）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weight_variable</span><span class="params">(shape,name)</span>:</span></span><br><span class="line">    initial = tf.truncated_normal(shape, stddev=<span class="number">0.1</span>)</span><br><span class="line">    <span class="keyword">return</span> tf.Variable(initial,name=name)</span><br><span class="line"><span class="comment"># 定义偏置工厂函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bias_variable</span><span class="params">(shape,name)</span>:</span></span><br><span class="line">    initial = tf.constant(<span class="number">0.1</span>, shape=shape)</span><br><span class="line">    <span class="keyword">return</span> tf.Variable(initial,name=name)</span><br><span class="line"><span class="comment"># 定义卷积矩阵工厂函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d</span><span class="params">(x, W)</span>:</span></span><br><span class="line">      <span class="keyword">return</span> tf.nn.conv2d(x, W, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"><span class="comment"># 定义池化层矩阵工厂函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_pool_2x2</span><span class="params">(x)</span>:</span></span><br><span class="line">      <span class="keyword">return</span> tf.nn.max_pool(x, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                        strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## 主要有两层卷积运算</span></span><br><span class="line"><span class="comment"># 第一层卷积层定义</span></span><br><span class="line">W_conv1 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">32</span>],name=<span class="string">'w_conv1'</span>)  <span class="comment"># 权重变量</span></span><br><span class="line">b_conv1 = bias_variable([<span class="number">32</span>],name=<span class="string">'b_conv1'</span>,)            <span class="comment"># 偏置</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 图片输入空间生成,结果空间生成（请求组织先分配好茅坑）</span></span><br><span class="line">x = tf.placeholder(<span class="string">"float"</span>, shape=[<span class="keyword">None</span>, <span class="number">28</span>*<span class="number">28</span>],name=<span class="string">"X"</span>)  <span class="comment"># </span></span><br><span class="line">y_ = tf.placeholder(<span class="string">"float"</span>, shape=[<span class="keyword">None</span>, <span class="number">11</span>],name=<span class="string">"Y"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将输入空间重新塑造为28*28*1（1指单通道，-1是指可以随机应变），为了后面的卷积运算 因为输入是一个向量集</span></span><br><span class="line">x_image = tf.reshape(x, [<span class="number">-1</span>,<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>]) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义卷积矩阵并计算</span></span><br><span class="line">h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)</span><br><span class="line"><span class="comment"># 定义池化层 </span></span><br><span class="line">h_pool1 = max_pool_2x2(h_conv1)</span><br><span class="line"><span class="comment"># 第二层卷积层定义</span></span><br><span class="line">W_conv2 = weight_variable([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>],name=<span class="string">'w_conv2'</span>)  <span class="comment"># 权重变量</span></span><br><span class="line">b_conv2 = bias_variable([<span class="number">64</span>],name=<span class="string">'b_conv2'</span>)              <span class="comment"># 偏置</span></span><br><span class="line"></span><br><span class="line">h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)</span><br><span class="line">h_pool2 = max_pool_2x2(h_conv2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 经过两次卷积和池化，最后的图片只有7*7了，但是还是不知道他到底是什么鬼，所以再来一个权重矩阵，来算算他到底是什么鬼</span></span><br><span class="line"><span class="comment"># 第一个与处理后图片尺寸一样的权重矩阵变量和偏置变量，直接点乘</span></span><br><span class="line">W_fc1 = weight_variable([<span class="number">7</span> * <span class="number">7</span> * <span class="number">64</span>, <span class="number">1024</span>],name=<span class="string">'w_fc1'</span>)  </span><br><span class="line">b_fc1 = bias_variable([<span class="number">1024</span>],name=<span class="string">'b_fc1'</span>)</span><br><span class="line"></span><br><span class="line">h_pool2_flat = tf.reshape(h_pool2, [<span class="number">-1</span>,<span class="number">7</span>*<span class="number">7</span>*<span class="number">64</span>])</span><br><span class="line">h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># keep_prob为了防止过拟合，具体原理我还没看到。。。。</span></span><br><span class="line">keep_prob = tf.placeholder(<span class="string">"float"</span>,name=<span class="string">'keep_prob'</span>)</span><br><span class="line">h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)</span><br><span class="line"><span class="comment"># 再来一个矩阵使得其变成一个全连接层，所谓全连接层就是一个向量，之所以要将矩阵化为全连接层</span></span><br><span class="line"><span class="comment"># 就是为了使得他通过和再一个权重相乘能够得到和结果维度相同的输出</span></span><br><span class="line">W_fc2 = weight_variable([<span class="number">1024</span>, <span class="number">11</span>],name=<span class="string">'w_fc2'</span>)</span><br><span class="line">b_fc2 = bias_variable([<span class="number">11</span>],name=<span class="string">'b_fc2'</span>)</span><br><span class="line"><span class="comment"># 最后的结果输出为一个向量 和labels相同的维度，</span></span><br><span class="line">y_conv=tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)</span><br><span class="line"><span class="comment"># 设置模型格式 ，添加输出的格式进去</span></span><br><span class="line">tf.add_to_collection(<span class="string">'yconv'</span>,y_conv)</span><br><span class="line">saver = tf.train.Saver()</span><br></pre></td></tr></table></figure></p>
+<h3 id="训练模型并保存"><a href="#训练模型并保存" class="headerlink" title="训练模型并保存"></a>训练模型并保存</h3><p>简单粗暴 上代码里有注释：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># 设置交叉熵为损失函数</span></span><br><span class="line">    cross_entropy = -tf.reduce_sum(y_*tf.log(y_conv))</span><br><span class="line">    <span class="comment"># 设置优化参数，采用AdamOptimizer优化方法，比最速下降法更优，能够防止过拟合</span></span><br><span class="line">    train_step = tf.train.AdamOptimizer(<span class="number">1e-4</span>).minimize(cross_entropy)</span><br><span class="line">    <span class="comment"># 判断预测结果和真实结果是否相同</span></span><br><span class="line">    correct_prediction = tf.equal(tf.argmax(y_conv,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</span><br><span class="line">    <span class="comment"># 精度</span></span><br><span class="line">    accuracy = tf.reduce_mean(tf.cast(correct_prediction, <span class="string">"float"</span>))</span><br><span class="line">    <span class="comment"># 初始化各个变量</span></span><br><span class="line">    sess.run(tf.initialize_all_variables())</span><br><span class="line">    <span class="comment"># 迭代训练</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">201</span>):</span><br><span class="line">        <span class="comment"># 随机选取数据进行训练</span></span><br><span class="line">        sample = random.sample(range(len(labels_train)),<span class="number">50</span>)</span><br><span class="line">        batch_xs=np.array([features_train[i] <span class="keyword">for</span> i <span class="keyword">in</span> sample])</span><br><span class="line">        batch_ys=np.array([labels_train[i] <span class="keyword">for</span> i <span class="keyword">in</span> sample])</span><br><span class="line">        <span class="comment"># 当是100倍数是保存模型，并且输出当前测试精度，保存路径为相对路径</span></span><br><span class="line">        <span class="keyword">if</span> i%<span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">            train_accuracy = accuracy.eval(feed_dict=&#123;x:batch_xs, y_: batch_ys, keep_prob: <span class="number">1.0</span>&#125;)</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"step %d, training accuracy %g"</span>%(i, train_accuracy))</span><br><span class="line">            save_path = saver.save(sess, <span class="string">"./datasets/digit_model/my_digit_model"</span>)</span><br><span class="line">        train_step.run(feed_dict=&#123;x:batch_xs, y_: batch_ys, keep_prob: <span class="number">0.5</span>&#125;)</span><br><span class="line">    <span class="comment"># 测试整体精度，加载测试集</span></span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"test accuracy %g"</span>%accuracy.eval(feed_dict=&#123;x: features_test, y_: labels_test, keep_prob: <span class="number">1.0</span>&#125;))</span><br></pre></td></tr></table></figure></p>
+<h2 id="模型应用和结果"><a href="#模型应用和结果" class="headerlink" title="模型应用和结果"></a>模型应用和结果</h2><h3 id="调用模型以及可视化显示"><a href="#调用模型以及可视化显示" class="headerlink" title="调用模型以及可视化显示"></a>调用模型以及可视化显示</h3><p>模型训练好可以直接使用此代码进行应用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不支持多行数字识别，以及单行多个小数点的数值识别（单行只能实现字符串识别），</span></span><br><span class="line"><span class="comment"># labels的各个位置代表的数字</span></span><br><span class="line">tar_temp=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="string">'.'</span>] </span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个阈值函数，将数码管部分取出来，根据实际情况进行相应修改，找到最优参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">thresholding_inv</span><span class="params">(image)</span>:</span></span><br><span class="line">    <span class="comment"># 定义膨胀核心，根据实际情况进行修改</span></span><br><span class="line">    kernel_dilate = cv2.getStructuringElement(cv2.MORPH_RECT,(<span class="number">1</span>, <span class="number">6</span>))<span class="comment"># 1代表横向膨胀，6代表纵向膨胀</span></span><br><span class="line">    <span class="comment">## 腐蚀参数我已经注释掉，根据实际情况选择是否使用</span></span><br><span class="line">    <span class="comment">#kernel_erode = cv2.getStructuringElement(cv2.MORPH_RECT,(2, 1)) </span></span><br><span class="line">    <span class="comment">## 根据RGB图得到灰度图</span></span><br><span class="line">    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    <span class="comment"># 灰度图二值化</span></span><br><span class="line">    ret, bin = cv2.threshold(gray, <span class="number">220</span>, <span class="number">255</span>, cv2.THRESH_BINARY)</span><br><span class="line">    <span class="comment">## 对灰度图进行腐蚀，主要是为了分离相近的小数点，如果足够清晰可以不使用腐蚀，我已注释掉</span></span><br><span class="line">    <span class="comment">#bin = cv2.erode(bin,kernel_erode)</span></span><br><span class="line">    <span class="comment">## 对灰度图进行膨胀</span></span><br><span class="line">    bin=cv2.dilate(bin,kernel_dilate,iterations = <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read the input image</span></span><br><span class="line"><span class="comment">## demo 图像在此目录下</span></span><br><span class="line">im = cv2.imread(<span class="string">'./datasets/img00004.png'</span>)  <span class="comment"># 还有 1-6 张图 修改最后一个数即可</span></span><br><span class="line"><span class="comment">## 二值化处理</span></span><br><span class="line">im_th = thresholding_inv(im)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示图片</span></span><br><span class="line">cv2.imshow(<span class="string">'im_th'</span>,im_th)</span><br><span class="line">cv2.waitKey(<span class="number">1000</span>) <span class="comment"># 显示1000ms </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Find contours in the image  寻找边界集合</span></span><br><span class="line">_,ctrs, hier = cv2.findContours(im_th.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line"><span class="comment"># Get rectangles contains each contour </span></span><br><span class="line">rects = [cv2.boundingRect(ctr) <span class="keyword">for</span> ctr <span class="keyword">in</span> ctrs]</span><br><span class="line"><span class="comment"># 加载训练好的模型，并预测通过</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="comment"># 加载模型的结构框架graph</span></span><br><span class="line">    new_saver = tf.train.import_meta_graph(<span class="string">'./datasets/digit_model/my_digit_model.meta'</span>)</span><br><span class="line">    <span class="comment"># 加载各种变量</span></span><br><span class="line">    new_saver.restore(sess,<span class="string">'./datasets/digit_model/my_digit_model'</span>)</span><br><span class="line">    yy_hyp = tf.get_collection(<span class="string">'yconv'</span>)[<span class="number">0</span>]</span><br><span class="line">    graph = tf.get_default_graph() </span><br><span class="line">    X = graph.get_operation_by_name(<span class="string">'X'</span>).outputs[<span class="number">0</span>]<span class="comment">#为了将 x placeholder加载出来</span></span><br><span class="line">    keep_prob = graph.get_operation_by_name(<span class="string">'keep_prob'</span>).outputs[<span class="number">0</span>] <span class="comment"># 将keep_prob placeholder加载出来</span></span><br><span class="line">    <span class="comment"># mm用来保存数字以及数字坐标</span></span><br><span class="line">    mm=&#123;&#125;</span><br><span class="line">    <span class="comment"># for循环对每一个contour 进行预测和求解，并储存</span></span><br><span class="line">    <span class="keyword">for</span> rect <span class="keyword">in</span> rects:</span><br><span class="line">        <span class="comment"># Draw the rectangles 得到数字区域 roi</span></span><br><span class="line">        cv2.rectangle(im, (rect[<span class="number">0</span>], rect[<span class="number">1</span>]), (rect[<span class="number">0</span>] + rect[<span class="number">2</span>], rect[<span class="number">1</span>] + rect[<span class="number">3</span>]), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">3</span>) </span><br><span class="line">        <span class="comment"># Make the rectangular region around the digit</span></span><br><span class="line">        leng1= int(rect[<span class="number">3</span>])</span><br><span class="line">        leng2= int(rect[<span class="number">2</span>])</span><br><span class="line">        pt1 = int(rect[<span class="number">1</span>] )</span><br><span class="line">        pt2 = int(rect[<span class="number">0</span>] )</span><br><span class="line">        <span class="comment"># 得到数字区域</span></span><br><span class="line">        roi = im_th[pt1:pt1+leng1, pt2:pt2+leng2]</span><br><span class="line">        <span class="comment"># 尺寸缩放为模型尺寸</span></span><br><span class="line">        roi = cv2.resize(roi, (<span class="number">28</span>, <span class="number">28</span>), interpolation=cv2.INTER_AREA)</span><br><span class="line">        <span class="comment"># 处理成一个向量，为了和模型输入一直</span></span><br><span class="line">        roi=np.array([roi.reshape(<span class="number">28</span>*<span class="number">28</span>)/<span class="number">255</span>])</span><br><span class="line">        <span class="comment"># 运行模型得到预测结果</span></span><br><span class="line">        pred= sess.run(yy_hyp,feed_dict = &#123;X:roi,keep_prob:<span class="number">1.0</span>&#125;)</span><br><span class="line">        <span class="comment"># 得到最大可能值索引 ind</span></span><br><span class="line">        ind=np.argmax(pred)</span><br><span class="line">        <span class="comment">#labels不同位置代表的不同数字   (tar_temp[ind]) 就是预测值</span></span><br><span class="line">        <span class="comment"># 将预测值添加到图像中，并显示</span></span><br><span class="line">        cv2.putText(im, str(tar_temp[ind]), (rect[<span class="number">0</span>], rect[<span class="number">1</span>]),cv2.FONT_HERSHEY_DUPLEX, <span class="number">2</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">3</span>)</span><br><span class="line">        <span class="comment"># 储存每个数字和其对应的boundingbox的像素点坐标</span></span><br><span class="line">        mm[pt2]=tar_temp[ind]</span><br><span class="line">    <span class="comment"># 最后的处理</span></span><br><span class="line">    <span class="comment"># 根据像素坐标，从左到右排序，得到数字的顺序</span></span><br><span class="line">    num_tup=sorted(mm.items(),key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>])</span><br><span class="line">    <span class="comment"># 将数字列表连接为字符串</span></span><br><span class="line">    num=(<span class="string">''</span>.join([str(i[<span class="number">1</span>]) <span class="keyword">for</span> i <span class="keyword">in</span> num_tup]))</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        numn=float(num)</span><br><span class="line">        print(<span class="string">'图中数字为%s,数值大小为%s'</span> %(num,numn))</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        print(<span class="string">'不好意思，目前不支持多个小数点的数值识别'</span>)</span><br><span class="line">        print(<span class="string">'图中数字为%s'</span>% num)</span><br><span class="line">    <span class="comment"># 显示图像 </span></span><br><span class="line">    cv2.namedWindow(<span class="string">"Resulting Image with Rectangular ROIs"</span>, cv2.WINDOW_NORMAL)</span><br><span class="line">    cv2.imshow(<span class="string">"Resulting Image with Rectangular ROIs"</span>, im)</span><br><span class="line">    cv2.waitKey(<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h3><p>输出结果如下图所示：<br><img src="http://otbsjcslc.bkt.clouddn.com//18-7-31/1618438.jpg" alt=""></p>
+<h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><p><a href="https://github.com/biueo/tube_digit_recognization" target="_blank" rel="noopener">https://github.com/biueo/tube_digit_recognization</a><br>欢迎star</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+   <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+  </div>
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>觉得有点帮助</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Decai 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Decai 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    <a href="/" title="访问的个人博客">Decai</a>
+  </li>
+    <li class="post-copyright-date">
+    <strong>创建时间：</strong>
+    2018-07-31
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.biueo.com/2018/07/31/数码管数字识别/" title="数码管数字识别">http://www.biueo.com/2018/07/31/数码管数字识别/</a>
+    <span id="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://www.biueo.com/2018/07/31/数码管数字识别/"  aria-label="复制成功！"></i></span>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+          
+            <a href="/tags/TensorFlow/" rel="tag"><i class="fa fa-tag"></i> TensorFlow</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+            
+              
+              <a href="/2018/08/01/Django之xadmin配置和后台的美化定制/" rel="prev" title="Django之xadmin配置和后台的美化定制">
+      
+                <i class="fa fa-chevron-left"></i> Django之xadmin配置和后台的美化定制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/12/Vi最常用到的几个命令/" rel="prev" title="Vi最常用到的几个命令">
+                Vi最常用到的几个命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1OC85NjIw"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+            <a href="/" class="site-author-image" rel="start" style="border:none">
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Decai" />
+            </a>
+            
+              <p class="site-author-name" itemprop="name">Decai</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/biueo" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/3292042271?refer_flag=1001030101_&is_all=1" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:decaideng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://htsing.me/" title="htsing" target="_blank">htsing</a>
+                  </li>
+                
+              </ul>
+            </div>
+          <div class="nowonline">
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1272287405'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1272287405%26online%3D2' type='text/javascript'%3E%3C/script%3E"));</script>
+</div>
+
+
+          
+
+          
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单数据集的创建"><span class="nav-number">1.</span> <span class="nav-text">简单数据集的创建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提取数字图片"><span class="nav-number">1.1.</span> <span class="nav-text">提取数字图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手工标定labels"><span class="nav-number">1.2.</span> <span class="nav-text">手工标定labels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片和标签对应处理"><span class="nav-number">1.3.</span> <span class="nav-text">图片和标签对应处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证数据集是否匹配"><span class="nav-number">2.</span> <span class="nav-text">验证数据集是否匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练模型"><span class="nav-number">3.</span> <span class="nav-text">训练模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义模型"><span class="nav-number">3.1.</span> <span class="nav-text">定义模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练模型并保存"><span class="nav-number">3.2.</span> <span class="nav-text">训练模型并保存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型应用和结果"><span class="nav-number">4.</span> <span class="nav-text">模型应用和结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调用模型以及可视化显示"><span class="nav-number">4.1.</span> <span class="nav-text">调用模型以及可视化显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出结果"><span class="nav-number">4.2.</span> <span class="nav-text">输出结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码地址"><span class="nav-number">5.</span> <span class="nav-text">源码地址</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+
+</script>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Decai</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">44.8k Words</span>
+  
+</div>
+<div id="days"></div>
+</script>
+<script language="javascript">
+function show_date_time(){
+window.setTimeout("show_date_time()", 1000);
+BirthDay=new Date("1/8/2018 15:00:00");
+today=new Date();
+timeold=(today.getTime()-BirthDay.getTime());
+sectimeold=timeold/1000
+secondsold=Math.floor(sectimeold);
+msPerDay=24*60*60*1000
+e_daysold=timeold/msPerDay
+daysold=Math.floor(e_daysold);
+e_hrsold=(e_daysold-daysold)*24;
+hrsold=setzero(Math.floor(e_hrsold));
+e_minsold=(e_hrsold-hrsold)*60;
+minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+seconds=setzero(Math.floor((e_minsold-minsold)*60));
+document.getElementById('days').innerHTML="Run for "+daysold+" Days "+hrsold+" Hours "+minsold+" m "+seconds+" s";
+}
+function setzero(i){
+if (i<10)
+{i="0" + i};
+return i;
+}
+show_date_time();
+</script>
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/photoswipe.min.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/photoswipe-ui-default.min.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("h66YLfJ9oSwJfXz6qlpT8G79-gzGzoHsz", "F2awEDUHWNxLr4tzDbLxKedY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "topRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 8927,
+    el: 'wpac-rating',
+    color: 'f79533'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <a id="mygithublabel" href="https://github.com/biueo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+<script src="/js/src/photoswipe.min.js?v=5.1.4"></script>
+<script src="/js/src/photoswipe-ui-default.min.js?v=5.1.4"></script>
+
+</body>
+
+
+</html>

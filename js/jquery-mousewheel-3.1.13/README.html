@@ -1,0 +1,35 @@
+<h1 id="jQuery-Mouse-Wheel-Plugin"><a href="#jQuery-Mouse-Wheel-Plugin" class="headerlink" title="jQuery Mouse Wheel Plugin"></a>jQuery Mouse Wheel Plugin</h1><p>A <a href="http://jquery.com/">jQuery</a> plugin that adds cross-browser mouse wheel support with delta normalization.</p>
+<p>In order to use the plugin, simply bind the <code>mousewheel</code> event to an element.</p>
+<p>It also provides two helper methods called <code>mousewheel</code> and <code>unmousewheel</code><br>that act just like other event helper methods in jQuery.</p>
+<p>The event object is updated with the normalized <code>deltaX</code> and <code>deltaY</code> properties.<br>In addition there is a new property on the event object called <code>deltaFactor</code>. Multiply<br>the <code>deltaFactor</code> by <code>deltaX</code> or <code>deltaY</code> to get the scroll distance that the browser<br>has reported.</p>
+<p>Here is an example of using both the bind and helper method syntax:</p>
+<pre><code class="lang-js">// using on
+$(&#39;#my_elem&#39;).on(&#39;mousewheel&#39;, function(event) {
+    console.log(event.deltaX, event.deltaY, event.deltaFactor);
+});
+
+// using the event helper
+$(&#39;#my_elem&#39;).mousewheel(function(event) {
+    console.log(event.deltaX, event.deltaY, event.deltaFactor);
+});
+</code></pre>
+<p>The old behavior of adding three arguments (<code>delta</code>, <code>deltaX</code>, and <code>deltaY</code>) to the<br>event handler is now deprecated and will be removed in later releases.</p>
+<h2 id="The-Deltas…"><a href="#The-Deltas…" class="headerlink" title="The Deltas…"></a>The Deltas…</h2><p>The combination of Browsers, Operating Systems, and Devices offer a huge range of possible delta values. In fact if the user<br>uses a trackpad and then a physical mouse wheel the delta values can differ wildly. This plugin normalizes those<br>values so you get a whole number starting at +-1 and going up in increments of +-1 according to the force or<br>acceleration that is used. This number has the potential to be in the thousands depending on the device.<br>Check out some of the data collected from users <a href="http://mousewheeldatacollector.herokuapp.com/">here</a>.</p>
+<h3 id="Getting-the-scroll-distance"><a href="#Getting-the-scroll-distance" class="headerlink" title="Getting the scroll distance"></a>Getting the scroll distance</h3><p>In some use-cases we prefer to have the normalized delta but in others we want to know how far the browser should<br>scroll based on the users input. This can be done by multiplying the <code>deltaFactor</code> by the <code>deltaX</code> or <code>deltaY</code><br>event property to find the scroll distance the browser reported.</p>
+<p>The <code>deltaFactor</code> property was added to the event object in 3.1.5 so that the actual reported delta value can be<br>extracted. This is a non-standard property.</p>
+<h2 id="Using-with-Browserify"><a href="#Using-with-Browserify" class="headerlink" title="Using with Browserify"></a>Using with <a href="http://browserify.org">Browserify</a></h2><p>Support for browserify is baked in.</p>
+<pre><code class="lang-bash">npm install jquery-mousewheel
+npm install jquery-browserify
+</code></pre>
+<p>In your server-side node.js code:</p>
+<pre><code class="lang-js">var express = require(&#39;express&#39;);
+var app = express.createServer();
+
+app.use(require(&#39;browserify&#39;)({
+    require : [ &#39;jquery-browserify&#39;, &#39;jquery-mousewheel&#39; ]
+}));
+</code></pre>
+<p>In your browser-side javascript:</p>
+<pre><code class="lang-js">var $ = require(&#39;jquery-browserify&#39;);
+require(&#39;jquery-mousewheel&#39;)($);
+</code></pre>
