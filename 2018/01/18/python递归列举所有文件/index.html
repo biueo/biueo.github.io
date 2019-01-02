@@ -113,14 +113,14 @@
 <meta property="og:site_name" content="Biueo">
 <meta property="og:description" content="使用递归列举特定目录下的全部文件">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-1-19/90515084.jpg">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-1-19/41017680.jpg">
-<meta property="og:image" content="https://assets-cdn.github.com/images/icons/emoji/unicode/1f631.png?v8">
-<meta property="og:updated_time" content="2018-01-19T01:38:54.000Z">
+<meta property="og:image" content="http://img.biueo.com//18-1-19/90515084.jpg">
+<meta property="og:image" content="http://img.biueo.com//18-1-19/41017680.jpg">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f631.png?v8">
+<meta property="og:updated_time" content="2019-01-02T15:34:39.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python递归列举所有文件">
 <meta name="twitter:description" content="使用递归列举特定目录下的全部文件">
-<meta name="twitter:image" content="http://otbsjcslc.bkt.clouddn.com//18-1-19/90515084.jpg">
+<meta name="twitter:image" content="http://img.biueo.com//18-1-19/90515084.jpg">
 
 
 
@@ -510,7 +510,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       
 
       
-        <script src="/assets/js/APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><div class="description">使用递归列举特定目录下的全部文件</div>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><script src="\assets\js\APlayer.min.js"> </script><div class="description">使用递归列举特定目录下的全部文件</div>
 
 <a id="more"></a>
 <h2 id="老习惯上代码"><a href="#老习惯上代码" class="headerlink" title="老习惯上代码"></a>老习惯上代码</h2><figure class="highlight python"><figcaption><span>列举所有文件</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!usr/bin/python</span></span><br><span class="line"><span class="comment">#-*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line">__author__=<span class="string">'ddc'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">path=<span class="string">"/Users/ddc/Desktop/B10003012fj"</span>  <span class="comment">#定义路径</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">global</span> dir_num</span><br><span class="line">dir_num=<span class="number">0</span>  <span class="comment">#递归函数执行次数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Listdir</span><span class="params">(path,fullname=False)</span>:</span></span><br><span class="line">	<span class="comment">#dir_num=0 #文件夹的数量</span></span><br><span class="line">	<span class="keyword">global</span> dir_num</span><br><span class="line">	dir_num+=<span class="number">1</span></span><br><span class="line">	a=<span class="string">'    '</span>*dir_num</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> fullname:</span><br><span class="line">		<span class="keyword">if</span> os.listdir(path):</span><br><span class="line">			<span class="keyword">for</span> f_d <span class="keyword">in</span> os.listdir(path):</span><br><span class="line">				p_con=os.path.join(path,f_d)</span><br><span class="line">				<span class="keyword">if</span> os.path.isfile(p_con):</span><br><span class="line">					print(a+f_d)      <span class="comment">#打印文件名</span></span><br><span class="line">				<span class="keyword">else</span>:</span><br><span class="line">					<span class="keyword">if</span> os.path.isdir(p_con):</span><br><span class="line">						print(<span class="string">'    '</span>*(dir_num<span class="number">-1</span>)+<span class="string">'----'</span>+f_d)  <span class="comment">#打印文件夹名</span></span><br><span class="line">						Listdir(p_con)       <span class="comment">#递归打印文件夹下所有文件</span></span><br><span class="line">						dir_num-=<span class="number">1</span>   <span class="comment">#保持下次的格式能够与之前的文件夹位置相同</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			print(a+<span class="string">'空'</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">if</span> os.listdir(path):</span><br><span class="line">			<span class="keyword">for</span> f_d <span class="keyword">in</span> os.listdir(path):</span><br><span class="line">				p_con=os.path.join(path,f_d)</span><br><span class="line">				<span class="keyword">if</span> os.path.isfile(p_con):</span><br><span class="line">					print(a+p_con)</span><br><span class="line">				<span class="keyword">else</span>:</span><br><span class="line">					<span class="keyword">if</span> os.path.isdir(p_con):</span><br><span class="line">						print(<span class="string">'    '</span>*(dir_num<span class="number">-1</span>)+<span class="string">'----'</span>+p_con)</span><br><span class="line">						Listdir(p_con,fullname=<span class="keyword">True</span>)</span><br><span class="line">						dir_num-=<span class="number">1</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			print(a+<span class="string">'空'</span>)</span><br><span class="line">				</span><br><span class="line">	</span><br><span class="line">		</span><br><span class="line">Listdir(path,fullname=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
@@ -521,8 +521,8 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <li>定义了一个变量a来排版打印的格式，a的空格数和文件的深度（即层数）成正比，文件夹藏的越深🤔空格数就越多</li>
 <li>此外打印文件夹名时，空格换成了横线，便于区分文件和文件夹</li>
 </ul>
-<h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h2><p>首先文件夹的实际内容：<br><img src="http://otbsjcslc.bkt.clouddn.com//18-1-19/90515084.jpg" alt=""><br>运行程序得到的结果<br><img src="http://otbsjcslc.bkt.clouddn.com//18-1-19/41017680.jpg" alt=""></p>
-<p>哈哈哈发现没有<img id="github-emoji" style="display:inline;vertical-align:center" alt="scream" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f631.png?v8" height="20" width="20">隐藏文件：</p>
+<h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h2><p>首先文件夹的实际内容：<br><img src="http://img.biueo.com//18-1-19/90515084.jpg" alt=""><br>运行程序得到的结果<br><img src="http://img.biueo.com//18-1-19/41017680.jpg" alt=""></p>
+<p>哈哈哈发现没有<img id="github-emoji" style="display:inline;vertical-align:center" alt="scream" src="https://github.githubassets.com/images/icons/emoji/unicode/1f631.png?v8" height="20" width="20">隐藏文件：</p>
 <ul>
 <li>.DS_Store</li>
 <li>.out00-PKG.pkg.icloud</li>
@@ -887,7 +887,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 
 </script>
-<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>
@@ -901,7 +901,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.8k Words</span>
+    <span title="Site words total count">44.7k Words</span>
   
 </div>
 <div id="days"></div>

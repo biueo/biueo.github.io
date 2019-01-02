@@ -113,13 +113,13 @@
 <meta property="og:site_name" content="Biueo">
 <meta property="og:description" content="使用树莓派穿透校园网，实现非校园网访问文献数据库，上谷歌学术">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-2-6/76609985.jpg">
-<meta property="og:image" content="https://assets-cdn.github.com/images/icons/emoji/bowtie.png?v8">
-<meta property="og:updated_time" content="2018-02-07T01:02:07.000Z">
+<meta property="og:image" content="http://img.biueo.com//18-2-6/76609985.jpg">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/bowtie.png?v8">
+<meta property="og:updated_time" content="2019-01-02T15:34:44.987Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派穿透校园网下载文献">
 <meta name="twitter:description" content="使用树莓派穿透校园网，实现非校园网访问文献数据库，上谷歌学术">
-<meta name="twitter:image" content="http://otbsjcslc.bkt.clouddn.com//18-2-6/76609985.jpg">
+<meta name="twitter:image" content="http://img.biueo.com//18-2-6/76609985.jpg">
 
 
 
@@ -509,7 +509,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       
 
       
-        <script src="/assets/js/APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote class="blockquote-center"><p>使用树莓派穿透校园网，实现非校园网访问文献数据库，上谷歌学术</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><script src="\assets\js\APlayer.min.js"> </script><blockquote class="blockquote-center"><p>使用树莓派穿透校园网，实现非校园网访问文献数据库，上谷歌学术</p>
 </blockquote>
 <a id="more"></a>
 <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>对于研究生来说谷歌和谷歌学术真的必不可少，但是一般在家中基本连不上这两个网站。博主马上也要放假了，在家说不定还能瞄几眼文献，所以就用现有的设备搞一个小服务器。</p>
@@ -585,10 +585,10 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p>&emsp;确保你的特定端口没有被使用，我们适用1080端口用命令查看端口占用情况：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo lsof -i:<span class="number">1080</span> </span><br><span class="line">sudo kill PID（进程PID号）<span class="comment">##杀死占用端口的进程</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="树莓派连接云主机"><a href="#树莓派连接云主机" class="headerlink" title="树莓派连接云主机"></a>树莓派连接云主机</h3><p>使树莓派通过服务器端口，listen云主机转发的请求，然后传递给校园网服务器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -fNC -R <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">1080</span>:yourhostname:<span class="number">443</span> your-user-name@your-server-ip  <span class="comment"># yourhostname可以用127.0.0.1代替</span></span><br></pre></td></tr></table></figure></p>
 <p>这时候应该需要输入云主机的登录密码，输入即可。</p>
-<h2 id="客户端使用shadowsocks"><a href="#客户端使用shadowsocks" class="headerlink" title="客户端使用shadowsocks"></a>客户端使用shadowsocks</h2><p>上面介绍的这种方式需要通过shadowsocks登录，需要各个平台下载不同的shadowsocks，地址<a href="https://github.com/shadowsocks/shadowsocks/wiki/Shadowsocks-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">参考这里</a><br>然后输入你的云主机ip地址和端口1080密码是你在树莓派上设置的password,然后即可使用。<br>因为我的校园网可以通过ipv6访问google,这样通过代理也能够访问google了。<br><img src="http://otbsjcslc.bkt.clouddn.com//18-2-6/76609985.jpg" alt=""></p>
+<h2 id="客户端使用shadowsocks"><a href="#客户端使用shadowsocks" class="headerlink" title="客户端使用shadowsocks"></a>客户端使用shadowsocks</h2><p>上面介绍的这种方式需要通过shadowsocks登录，需要各个平台下载不同的shadowsocks，地址<a href="https://github.com/shadowsocks/shadowsocks/wiki/Shadowsocks-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">参考这里</a><br>然后输入你的云主机ip地址和端口1080密码是你在树莓派上设置的password,然后即可使用。<br>因为我的校园网可以通过ipv6访问google,这样通过代理也能够访问google了。<br><img src="http://img.biueo.com//18-2-6/76609985.jpg" alt=""></p>
 <h3 id="选择代理方式"><a href="#选择代理方式" class="headerlink" title="选择代理方式"></a>选择代理方式</h3><p>这样需要我们在树莓派上直接开一个shadowsocks客户端和一个服务器。客户端负责连接服务器，云主机不做改变，这样我们可以只需要在特定的平台改变代理就可了，不需要安装shadowsocks.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ssserver -p 443 -k password -m aes-256-cfb    #打开服务器 password改成自己的密码</span><br><span class="line">sslocal -s 127.0.0.1 -p 443 -b 127.0.0.1 -l 1080 -k password  #创建客户端</span><br></pre></td></tr></table></figure></p>
 <p>然后在自己的pc或者手机上添加代理，具体的可以参考<a href="https://zh.wikihow.com/%E6%9B%B4%E6%94%B9%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE" target="_blank" rel="noopener">这里</a></p>
-<center><strong>Enjoy it! <img id="github-emoji" style="display:inline;vertical-align:center" alt="bowtie" src="https://assets-cdn.github.com/images/icons/emoji/bowtie.png?v8" height="20" width="20"></strong></center>
+<center><strong>Enjoy it! <img id="github-emoji" style="display:inline;vertical-align:center" alt="bowtie" src="https://github.githubassets.com/images/icons/emoji/bowtie.png?v8" height="20" width="20"></strong></center>
 
 <p>附上一个小笔记：树莓派重启samba使用：<code>sudo /etc/init.d/samba restart</code><br>树莓派ip查看<br>hostname I<br>树莓派hosts位置<br>/etc/hosts<br>树莓派查看端口<br>netstat -anp<br>树莓派启动ipv6<br>vi /etc/modprobe.d/ipv6.conf</p>
 
@@ -952,7 +952,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 
 </script>
-<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>
@@ -966,7 +966,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.8k Words</span>
+    <span title="Site words total count">44.7k Words</span>
   
 </div>
 <div id="days"></div>

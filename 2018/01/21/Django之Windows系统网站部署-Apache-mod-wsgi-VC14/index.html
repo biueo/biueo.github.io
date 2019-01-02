@@ -113,16 +113,16 @@
 <meta property="og:site_name" content="Biueo">
 <meta property="og:description" content="Windows下将Django通过Apache部署">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//17-8-3/46922120.jpg">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//17-8-3/50882682.jpg">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//17-8-3/12221580.jpg">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//17-8-3/99629922.jpg">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//17-8-3/66280041.jpg">
-<meta property="og:updated_time" content="2018-01-21T09:39:18.000Z">
+<meta property="og:image" content="http://img.biueo.com//17-8-3/46922120.jpg">
+<meta property="og:image" content="http://img.biueo.com//17-8-3/50882682.jpg">
+<meta property="og:image" content="http://img.biueo.com//17-8-3/12221580.jpg">
+<meta property="og:image" content="http://img.biueo.com//17-8-3/99629922.jpg">
+<meta property="og:image" content="http://img.biueo.com//17-8-3/66280041.jpg">
+<meta property="og:updated_time" content="2019-01-02T15:34:30.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django之Windows系统网站部署-Apache+mod_wsgi+VC14">
 <meta name="twitter:description" content="Windows下将Django通过Apache部署">
-<meta name="twitter:image" content="http://otbsjcslc.bkt.clouddn.com//17-8-3/46922120.jpg">
+<meta name="twitter:image" content="http://img.biueo.com//17-8-3/46922120.jpg">
 
 
 
@@ -512,12 +512,12 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       
 
       
-        <script src="/assets/js/APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><div class="description">Windows下将Django通过Apache部署</div>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><script src="\assets\js\APlayer.min.js"> </script><div class="description">Windows下将Django通过Apache部署</div>
 
 <a id="more"></a>
 <h2 id="安装Apache环境"><a href="#安装Apache环境" class="headerlink" title="安装Apache环境"></a>安装Apache环境</h2><p>进入Apache的官方网站：<a href="http://httpd.apache.org进入Apache2.4" target="_blank" rel="noopener">http://httpd.apache.org进入Apache2.4</a> 的下载页面：<br><a href="https://www.apachehaus.com/cgi-bin/download.plx" target="_blank" rel="noopener">https://www.apachehaus.com/cgi-bin/download.plx</a></p>
 <p>根据你的系统下载相应的版本，但是要知道版本需要VC编译支持，下载的时候看清楚需要安装的VC版本，本例程，选用的是：Apache 2.4.27 x64 VC14版本。</p>
-<p><img src="http://otbsjcslc.bkt.clouddn.com//17-8-3/46922120.jpg" alt=""><br><img src="http://otbsjcslc.bkt.clouddn.com//17-8-3/50882682.jpg" alt=""><br><img src="http://otbsjcslc.bkt.clouddn.com//17-8-3/12221580.jpg" alt=""><br><img src="http://otbsjcslc.bkt.clouddn.com//17-8-3/99629922.jpg" alt=""><br>点击右方小图标进项下载。下载完成后将其中的Apache24进行解压，解压位置不要使用中文名，本例子放在了C:\Apache24中，<br>cd到当前文件夹下的bin中运行命令如下：</p>
+<p><img src="http://img.biueo.com//17-8-3/46922120.jpg" alt=""><br><img src="http://img.biueo.com//17-8-3/50882682.jpg" alt=""><br><img src="http://img.biueo.com//17-8-3/12221580.jpg" alt=""><br><img src="http://img.biueo.com//17-8-3/99629922.jpg" alt=""><br>点击右方小图标进项下载。下载完成后将其中的Apache24进行解压，解压位置不要使用中文名，本例子放在了C:\Apache24中，<br>cd到当前文件夹下的bin中运行命令如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> C:\Apache24\bin</span><br><span class="line">httpd -k install</span><br></pre></td></tr></table></figure>
 <p>结果会出现</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerRoot must be a valid directory</span><br></pre></td></tr></table></figure>
@@ -546,7 +546,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设置Debug</span></span><br><span class="line">Debug=<span class="keyword">False</span></span><br></pre></td></tr></table></figure>
 <p>这时候Django的静态文件无法使用需要Apache配置，还是修改httpd.conf</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#添加下面语句</span><br><span class="line"></span><br><span class="line">Alias /static/ C:\website\static\</span><br><span class="line">&lt;Directory C:\website\static\&gt;</span><br><span class="line">Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="重启Apache"><a href="#重启Apache" class="headerlink" title="重启Apache"></a>重启Apache</h2><p>在C:\Apache24\bin\中运行apache-monitor.exe,点击restar即可<br><img src="http://otbsjcslc.bkt.clouddn.com//17-8-3/66280041.jpg" alt=""><br>在浏览器中输入<a href="http://localhost:8089/进行查看" target="_blank" rel="noopener">http://localhost:8089/进行查看</a></p>
+<h2 id="重启Apache"><a href="#重启Apache" class="headerlink" title="重启Apache"></a>重启Apache</h2><p>在C:\Apache24\bin\中运行apache-monitor.exe,点击restar即可<br><img src="http://img.biueo.com//17-8-3/66280041.jpg" alt=""><br>在浏览器中输入<a href="http://localhost:8089/进行查看" target="_blank" rel="noopener">http://localhost:8089/进行查看</a></p>
 <h2 id="Enjoy-it"><a href="#Enjoy-it" class="headerlink" title="Enjoy it"></a>Enjoy it</h2>
       
     </div>
@@ -906,7 +906,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 
 </script>
-<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>
@@ -920,7 +920,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.8k Words</span>
+    <span title="Site words total count">44.7k Words</span>
   
 </div>
 <div id="days"></div>

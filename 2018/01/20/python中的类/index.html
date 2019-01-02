@@ -113,13 +113,13 @@
 <meta property="og:site_name" content="Biueo">
 <meta property="og:description" content="介绍Python中的类的基础知识">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-1-20/72879223.jpg">
-<meta property="og:image" content="http://otbsjcslc.bkt.clouddn.com//18-1-21/89823849.jpg">
-<meta property="og:updated_time" content="2018-01-21T07:52:48.000Z">
+<meta property="og:image" content="http://img.biueo.com//18-1-20/72879223.jpg">
+<meta property="og:image" content="http://img.biueo.com//18-1-21/89823849.jpg">
+<meta property="og:updated_time" content="2019-01-02T15:34:36.611Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python中的类">
 <meta name="twitter:description" content="介绍Python中的类的基础知识">
-<meta name="twitter:image" content="http://otbsjcslc.bkt.clouddn.com//18-1-20/72879223.jpg">
+<meta name="twitter:image" content="http://img.biueo.com//18-1-20/72879223.jpg">
 
 
 
@@ -509,7 +509,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       
 
       
-        <script src="/assets/js/APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><div class="description">介绍Python中的类的基础知识</div>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><script src="\assets\js\APlayer.min.js"> </script><div class="description">介绍Python中的类的基础知识</div>
 
 <a id="more"></a>
 <h2 id="OOP语言和OPP语言"><a href="#OOP语言和OPP语言" class="headerlink" title="OOP语言和OPP语言"></a>OOP语言和OPP语言</h2><h3 id="面对对象编程"><a href="#面对对象编程" class="headerlink" title="面对对象编程"></a>面对对象编程</h3><p>面对对象编程(Object Oriented Programming, OOP,面对对象程序设计)，它的一条基本原则就是计算机程序是由单个能够起到<code>子程序</code>作用的单元或对象组合而成。</p>
@@ -646,7 +646,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 <p><strong>通过实例访问类需谨慎</strong><br>比如上面的代码通过实例尝试对类的属性进行修改，发现只是徒劳。<br><strong>但是：</strong> 如果类属性是可变的那一切都不一样了，比如字典:<br><figure class="highlight python"><figcaption><span>可变的类属性</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Myclass</span><span class="params">(object)</span>:</span></span><br><span class="line">...:     x=&#123;<span class="number">2018</span>:<span class="string">'ILY'</span>&#125;</span><br><span class="line">&gt;&gt;&gt;c=Myclass()</span><br><span class="line">&gt;&gt;&gt;c.x</span><br><span class="line">&#123;<span class="number">2018</span>:<span class="string">'ILY'</span>&#125;</span><br><span class="line">&gt;&gt;&gt;c.x[<span class="number">2019</span>]=<span class="string">'IVLY'</span></span><br><span class="line">&gt;&gt;&gt;c.x</span><br><span class="line">&#123;<span class="number">2018</span>:<span class="string">'ILY'</span>,<span class="number">2019</span>:<span class="string">'IVLY'</span>&#125;</span><br><span class="line">&gt;&gt;&gt;Myclass.x</span><br><span class="line">&#123;<span class="number">2018</span>:<span class="string">'ILY'</span>,<span class="number">2019</span>:<span class="string">'IVLY'</span>&#125;</span><br><span class="line">&gt;&gt;&gt;c.x[<span class="number">2018</span>]=<span class="string">'IVLY'</span></span><br><span class="line">&gt;&gt;&gt;c.x</span><br><span class="line">&#123;<span class="number">2018</span>:<span class="string">'IVLY'</span>&#125;</span><br><span class="line">&gt;&gt;&gt;Myclass.x</span><br><span class="line">&#123;<span class="number">2018</span>:<span class="string">'IVLY'</span>&#125;</span><br></pre></td></tr></table></figure></p>
 <div class="note danger ">因此使用实例属性来试着修改类属性时很危险的,需要类名来修改类属性，当实例属性存在同名的类属性时，实例默认调用的属性为实例属性非类属性，参考下面代码</div>
 
-<p><img src="http://otbsjcslc.bkt.clouddn.com//18-1-20/72879223.jpg" alt=""></p>
+<p><img src="http://img.biueo.com//18-1-20/72879223.jpg" alt=""></p>
 <p>类属性更新时，再次通过实例调用类属性也会更新。</p>
 <h2 id="绑定和方法调用"><a href="#绑定和方法调用" class="headerlink" title="绑定和方法调用"></a>绑定和方法调用</h2><p>再次阐述绑定（binding)，主要是与方法关联，方法仅仅是类内部定义的函数，(意味着是类属性不是实例属性)，方法只有在其所属类具有实例时，才能被调用。不能被类调用，因为缺少self的值，所以当存在一个实例时，方法才能被认为是绑定到那个实例了。没有实例方法就是未绑定的。<br>任何一个方法定义中的第一个参数都是self,他表示调用此方法的实例对象。</p>
 <h3 id="self是什么？"><a href="#self是什么？" class="headerlink" title="self是什么？"></a>self是什么？</h3><p>self变量用于在类实例方法引用方法绑定的实例（有点绕哈！），因为方法的实例在任何方法调用中总是作为第一个参数传递的，self被选中用来代表实例。你必须在方法声明中放上self。但是我们可以在方法中不适用self哈哈哈！但是这样你不如直接创建一个常规函数，除非你有其他想法。毕竟没有用到实例你放在这里占地啊！</p>
@@ -719,7 +719,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
 </li>
 </ul>
 <h3 id="dir"><a href="#dir" class="headerlink" title="dir()"></a>dir()</h3><p>列出一个模块中所有属性信息<br>Usage: dir(obj),不仅可以作用到类上，亦可以作用到对象上。</p>
-<h3 id="super"><a href="#super" class="headerlink" title="super()"></a>super()</h3><p>这个函数帮助程序员找到父类，一般情况下程序员仅能通过调用非绑定方法调用祖类方法，使用super()可以简化搜索一个合适的祖先的任务，并且调用他时能够传入实例或类型对象。之前也有用到。<br>Usage:<br>super(type[,obj])<br>返回的回一个super类，<br><img src="http://otbsjcslc.bkt.clouddn.com//18-1-21/89823849.jpg" alt=""></p>
+<h3 id="super"><a href="#super" class="headerlink" title="super()"></a>super()</h3><p>这个函数帮助程序员找到父类，一般情况下程序员仅能通过调用非绑定方法调用祖类方法，使用super()可以简化搜索一个合适的祖先的任务，并且调用他时能够传入实例或类型对象。之前也有用到。<br>Usage:<br>super(type[,obj])<br>返回的回一个super类，<br><img src="http://img.biueo.com//18-1-21/89823849.jpg" alt=""></p>
 <h3 id="var"><a href="#var" class="headerlink" title="var()"></a>var()</h3><p>var()内建函数和dir()类似，只是给定的对象必须有一个<code>__dict__</code>属性，var()返回一个字典，它包含了对象存于<code>__dict__</code>中的属性和值，如果没有<code>__dict__</code>则会异常</p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><div id="footnotes"><hr><div id="footnotelist"><ol style="list-style:none; padding-left: 0;"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">1.</span><span style="display: inline-block; vertical-align: top;">参考百度百科“<a href="https://baike.baidu.com/item/OOP/1152915?fr=aladdin" target="_blank" rel="noopener">OOP</a>”链接</span><a href="#fnref:1" rev="footnote"> ↩</a></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">2.</span><span style="display: inline-block; vertical-align: top;"><a href="https://coolshell.cn/articles/11265.html" target="_blank" rel="noopener">https://coolshell.cn/articles/11265.html</a></span><a href="#fnref:2" rev="footnote"> ↩</a></li><li id="fn:3"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">3.</span><span style="display: inline-block; vertical-align: top;"><a href="https://www.jianshu.com/p/212b6fdb2c50" target="_blank" rel="noopener">https://www.jianshu.com/p/212b6fdb2c50</a></span><a href="#fnref:3" rev="footnote"> ↩</a></li><li id="fn:4"><span style="display: inline-block; vertical-align: top; padding-right: 10px;">4.</span><span style="display: inline-block; vertical-align: top;">主要参考《python核心编程》不错的一本书</span><a href="#fnref:4" rev="footnote"> ↩</a></li></ol></div></div>
       
@@ -1078,7 +1078,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 
 </script>
-<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>
@@ -1092,7 +1092,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.8k Words</span>
+    <span title="Site words total count">44.7k Words</span>
   
 </div>
 <div id="days"></div>
