@@ -113,13 +113,13 @@
 <meta property="og:site_name" content="Biueo">
 <meta property="og:description" content="使用python刷leetcode笔记一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.biueo.com//18-1-25/1046514.jpg">
-<meta property="og:image" content="http://img.biueo.com//18-1-25/79401826.jpg">
-<meta property="og:updated_time" content="2019-01-02T15:34:33.160Z">
+<meta property="og:image" content="http://img.dpsdp.com/18-1-25/1046514.jpg">
+<meta property="og:image" content="http://img.dpsdp.com/18-1-25/79401826.jpg">
+<meta property="og:updated_time" content="2019-02-13T11:40:05.770Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LeetCode刷题笔记1">
 <meta name="twitter:description" content="使用python刷leetcode笔记一">
-<meta name="twitter:image" content="http://img.biueo.com//18-1-25/1046514.jpg">
+<meta name="twitter:image" content="http://img.dpsdp.com/18-1-25/1046514.jpg">
 
 
 
@@ -512,7 +512,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
         <script src="\assets\js\APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><blockquote class="blockquote-center"><p>使用python刷leetcode笔记一</p>
 </blockquote>
 <a id="more"></a>
-<p><img src="http://img.biueo.com//18-1-25/1046514.jpg" alt=""></p>
+<p><img src="http://img.dpsdp.com/18-1-25/1046514.jpg" alt=""></p>
 <h2 id="第一题-Two-Sum"><a href="#第一题-Two-Sum" class="headerlink" title="第一题 - Two Sum"></a>第一题 - Two Sum</h2><p>链接：<a href="https://leetcode.com/problems/two-sum/description/" target="_blank" rel="noopener">https://leetcode.com/problems/two-sum/description/</a></p>
 <h3 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h3><div class="note info no-icon">题目<br>
 Given an array of integers, retrun indices of the two numbers such that they add up to a specific target.
@@ -566,7 +566,7 @@ Explanation: 342 + 465 = 807.
 <h3 id="结果代码-2"><a href="#结果代码-2" class="headerlink" title="结果代码"></a>结果代码</h3><figure class="highlight python"><figcaption><span>本人代码</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> len(s)&lt;<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        sub=s[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)<span class="number">-1</span>):</span><br><span class="line">            j=<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> (s[i+j] <span class="keyword">not</span> <span class="keyword">in</span> s[i:i+j]):</span><br><span class="line">                <span class="keyword">if</span> (i+j+<span class="number">1</span>&lt;=len(s)<span class="number">-1</span>) :</span><br><span class="line">                    j+=<span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    j+=<span class="number">1</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">if</span> len(s[i:i+j])&gt;len(sub):</span><br><span class="line">                sub=s[i:i+j]</span><br><span class="line">        <span class="keyword">return</span> len(sub)</span><br></pre></td></tr></table></figure>
 <p>👆是本人代码，虽然记过能够算对，但是最后提交时，一个非常长的字符串运算超出了时间。<br>思想是：<br>从左往右依次查看字符，如果和之前的字符不重复，则继续累加，如果重复则截断，选取当前长度和前面最大截断的长度中最长的哪一个。直到字符串结束为止。</p>
 <figure class="highlight python"><figcaption><span>他人代码</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        dic, res, start, = &#123;&#125;, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i, ch <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            <span class="keyword">if</span> ch <span class="keyword">in</span> dic:</span><br><span class="line">                <span class="comment"># update the res</span></span><br><span class="line">                res = max(res, i-start)</span><br><span class="line">                <span class="comment"># here should be careful, like "abba"</span></span><br><span class="line">                start = max(start, dic[ch]+<span class="number">1</span>)</span><br><span class="line">            dic[ch] = i</span><br><span class="line">        <span class="comment"># return should consider the last </span></span><br><span class="line">        <span class="comment"># non-repeated substring</span></span><br><span class="line">        <span class="keyword">return</span> max(res, len(s)-start)</span><br></pre></td></tr></table></figure>
-<p>这个代码的思想是，出现重复字符后，计算和前一个相同字符之间的距离，保留最长的哪一个即可。<br><img src="http://img.biueo.com//18-1-25/79401826.jpg" alt=""><br>start逐渐往右移动，语句<code>start=max(start,dic[ch]+1)</code>就是为了防止’abba’这种情况返回左边👈</p>
+<p>这个代码的思想是，出现重复字符后，计算和前一个相同字符之间的距离，保留最长的哪一个即可。<br><img src="http://img.dpsdp.com/18-1-25/79401826.jpg" alt=""><br>start逐渐往右移动，语句<code>start=max(start,dic[ch]+1)</code>就是为了防止’abba’这种情况返回左边👈</p>
 <h3 id="本题笔记-2"><a href="#本题笔记-2" class="headerlink" title="本题笔记"></a>本题笔记</h3><ul>
 <li>巩固一下enumerate()函数</li>
 <li>编程中注意时间问题</li>
@@ -804,7 +804,7 @@ Explanation: 342 + 465 = 807.
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -947,7 +947,7 @@ Explanation: 342 + 465 = 807.
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.7k Words</span>
+    <span title="Site words total count">45.4k Words</span>
   
 </div>
 <div id="days"></div>

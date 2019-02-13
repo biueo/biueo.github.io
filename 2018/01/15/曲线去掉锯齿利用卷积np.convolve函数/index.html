@@ -113,13 +113,13 @@
 <meta property="og:site_name" content="Biueo">
 <meta property="og:description" content="使用卷积积分平滑曲线最终效果如下">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.biueo.com//18-1-15/57911525.jpg">
-<meta property="og:image" content="http://img.biueo.com//18-1-15/57911525.jpg">
-<meta property="og:updated_time" content="2019-01-02T15:34:44.457Z">
+<meta property="og:image" content="http://img.dpsdp.com/18-1-15/57911525.jpg">
+<meta property="og:image" content="http://img.dpsdp.com/18-1-15/57911525.jpg">
+<meta property="og:updated_time" content="2019-02-13T11:40:28.057Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="曲线去掉锯齿利用卷积np.convolve函数平滑">
 <meta name="twitter:description" content="使用卷积积分平滑曲线最终效果如下">
-<meta name="twitter:image" content="http://img.biueo.com//18-1-15/57911525.jpg">
+<meta name="twitter:image" content="http://img.dpsdp.com/18-1-15/57911525.jpg">
 
 
 
@@ -520,11 +520,11 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
       
 
       
-        <script src="\assets\js\APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><div class="description">使用卷积积分平滑曲线最终效果如下</div><br><img src="http://img.biueo.com//18-1-15/57911525.jpg" alt=""></p>
+        <script src="\assets\js\APlayer.min.js"> </script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><div class="description">使用卷积积分平滑曲线最终效果如下</div><br><img src="http://img.dpsdp.com/18-1-15/57911525.jpg" alt=""></p>
 <a id="more"></a>
 <h2 id="直接上代码吧"><a href="#直接上代码吧" class="headerlink" title="直接上代码吧"></a>直接上代码吧</h2><p>代码如下：</p>
 <figure class="highlight python"><figcaption><span>卷积平滑曲线</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 导入相应库函数</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.rc(<span class="string">'font'</span>,family=<span class="string">"Microsoft YaHei"</span>,size=<span class="number">16</span>)</span><br><span class="line">plt.rc(<span class="string">'lines'</span>,lw=<span class="number">3</span>)</span><br><span class="line"><span class="comment">## 平滑曲线</span></span><br><span class="line">data=np.loadtxt(<span class="string">'286-189-600ps.txt'</span>,skiprows=<span class="number">15</span>) <span class="comment"># 导入数据 二维数据</span></span><br><span class="line"><span class="comment"># set the windows' size</span></span><br><span class="line">N=<span class="number">3</span>  <span class="comment"># 卷积参数，越大越平滑</span></span><br><span class="line">weights=np.ones(N)/N  <span class="comment"># set the weight factors</span></span><br><span class="line"></span><br><span class="line">c = data[:,<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">ma = np.convolve(weights, c)[N<span class="number">-1</span>:-N+<span class="number">1</span>]  <span class="comment">#卷积运算</span></span><br><span class="line">t = data[:,<span class="number">0</span>][np.arange(N<span class="number">-1</span>, len(c))]</span><br><span class="line"><span class="comment"># 结果作图：</span></span><br><span class="line">plt.figure(figsize=(<span class="number">12</span>,<span class="number">8</span>))</span><br><span class="line">plt.plot(t, c[N<span class="number">-1</span>:],<span class="string">'b-'</span>, lw=<span class="number">1.0</span>,label=<span class="string">'原图'</span>)</span><br><span class="line">plt.plot(t, ma, <span class="string">'r-'</span>,lw=<span class="number">2.0</span>,label=<span class="string">'卷积平滑后'</span>)</span><br><span class="line">plt.legend(fontsize=<span class="number">20</span>)</span><br><span class="line">plt.grid()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><img src="http://img.biueo.com//18-1-15/57911525.jpg" alt=""></p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p><img src="http://img.dpsdp.com/18-1-15/57911525.jpg" alt=""></p>
 
       
     </div>
@@ -757,7 +757,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -900,7 +900,7 @@ const loadScript = function loadScript(c,b){var a=document.createElement("script
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.7k Words</span>
+    <span title="Site words total count">45.4k Words</span>
   
 </div>
 <div id="days"></div>
